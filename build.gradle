@@ -1,0 +1,32 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+}
+
+task libs(type: Copy) {
+    description = 'Create a director w/ all compile deps. For use with ide - include this folder as ide dependency'
+    into 'libs'
+    from configurations.compile
+}
+
+task 'libsTest'(type: Copy) {
+    description = 'Create a director w/ all compile deps. For use with ide - include this folder as ide dependency'
+    into 'libs-test'
+    from configurations.testCompile
+}
+
+dependencies {
+    compile 'com.google.guava:guava:14.0.1'
+
+    testCompile('org.spockframework:spock-core:0.7-groovy-2.0') {
+        exclude group: 'org.codehaus.groovy'
+    }
+}
+
+defaultTasks 'libs', 'libsTest'
+
+sourceSets {
+    test {}
+}
